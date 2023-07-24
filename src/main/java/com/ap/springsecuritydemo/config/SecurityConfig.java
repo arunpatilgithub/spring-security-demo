@@ -59,8 +59,8 @@ public class SecurityConfig {
         //User.withDefaultPasswordEncoder is not at all recommended for
         // Production environment. I am just using it for demo purpose.
         UserDetails user = User.withDefaultPasswordEncoder()
-                               .username("user")
-                               .password("password")
+                               .username("barfi")
+                               .password("woof")
                                .roles("read")
                                .build();
         return new MapReactiveUserDetailsService(user);
@@ -68,14 +68,15 @@ public class SecurityConfig {
 
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-        http.authorizeExchange(exchanges -> exchanges
-                                           .anyExchange().authenticated()
-                                  )
+        http.csrf(c -> c.disable()).authorizeExchange(exchanges -> exchanges
+                        .anyExchange().authenticated()
+                )
                 .httpBasic(withDefaults())
                 .formLogin(withDefaults());
 
         return http.build();
     }
+
 
 
 }
